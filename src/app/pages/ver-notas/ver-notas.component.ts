@@ -18,7 +18,6 @@ export class VerNotasComponent {
       notasServices.getNota(this.id).subscribe(res => {
         if (res && res.success != false) {
           this.nota = res;
-          console.log(this.nota);
         }
       });
     });
