@@ -17,8 +17,15 @@ export class NotasService {
     return this.http.post<any>(`${environment.API_URL}/api/notas/add`,{titulo, imagen, descripcion, contenido})
   }
 
+  actualizar(id:any, titulo:string, imagen:string, descripcion:string, contenido:any) {
+    return this.http.post<any>(`${environment.API_URL}/api/notas/update/${id}`,{titulo, imagen, descripcion, contenido})
+  }
 
   getNota(id:number) {
     return this.http.get<any>(`${environment.API_URL}/api/notas/${id}`);
+  }
+
+  eliminar(id:any) {
+    return this.http.delete<any>(`${environment.API_URL}/api/notas/delete/${id}`);
   }
 }

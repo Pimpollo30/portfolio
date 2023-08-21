@@ -18,12 +18,12 @@ const routes: Routes = [
     { path: 'experiencia', component: ExperienciaComponent},
     { path: 'notas', component: NotasComponent},
     { path: 'notas/:id', component: VerNotasComponent},
+    {path: 'crud-notas', component: CrudNotasComponent, canActivate:[AuthGuard]}
   ]},
 
   { path: '', component: LoginLayoutComponent, 
     children: [
       {path: 'login', component: LoginComponent},
-      {path: 'crud-notas', component: CrudNotasComponent, canActivate:[AuthGuard]}
     ]}
 ];
 

@@ -34,8 +34,7 @@
               "src/styles.css"
             ],
             "scripts": [
-              "node_modules/flowbite/dist/flowbite.min.js",
-              "src/assets/dark-mode.js"
+              "node_modules/flowbite/dist/flowbite.min.js"
             ]
           },
           "configurations": {

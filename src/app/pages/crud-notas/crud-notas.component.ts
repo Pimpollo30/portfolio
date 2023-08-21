@@ -3,8 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotasService } from 'src/app/services/notas.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { Modal } from 'flowbite'
+import { Modal, initFlowbite } from 'flowbite'
 import type { ModalOptions, ModalInterface } from 'flowbite'
+import Swal from 'sweetalert2'
+
 
 @Component({
   selector: 'app-crud-notas',
@@ -15,6 +17,7 @@ export class CrudNotasComponent {
   modal!: ModalInterface;
   notas:any[] = [];
   notasForm: FormGroup;
+  id!:any;
   editorConfig: AngularEditorConfig = {
     editable: true,
       spellcheck: true,
@@ -26,6 +29,7 @@ export class CrudNotasComponent {
       translate: 'yes',
       enableToolbar: true,
       showToolbar: true,
+      outline:false,
       placeholder: 'Contenido...',
       defaultParagraphSeparator: '',
       defaultFontName: '',
@@ -63,9 +67,11 @@ export class CrudNotasComponent {
   }
 
   ngOnInit() {
+    initFlowbite();
     this.notasService.getNotas().subscribe(res => {
       if (res && res.length > 0) {
         this.notas = res;
+        setTimeout(() => initFlowbite(), 50);
       }
     });
 
@@ -96,15 +102,68 @@ export class CrudNotasComponent {
   closeModal() {
     this.modal.hide();
   }
+
   agregar() {
     const form = this.notasForm.value;
     if (form.titulo && form.contenido) {
-      this.notasService.agregar(form.titulo, form.imagen, form.descripcion, form.contenido).subscribe(data => {
-        if (data) {
-          this.modal.hide();
-          this.notasForm.reset();
-        }
-      });
+      if (!this.id) {
+        this.notasService.agregar(form.titulo, form.imagen, form.descripcion, form.contenido).subscribe(data => {
+          if (data) {
+            this.modal.hide();
+            this.notasForm.reset();
+          }
+        });
+      }else {
+        this.notasService.actualizar(this.id, form.titulo, form.imagen, form.descripcion, form.contenido).subscribe(data => {
+          if (data) {
+            this.modal.hide();
+            this.notasForm.reset();
+          }
+        });
+      }
+      this.id = null;
     }
+  }
+
+  openModalEdit(nota:any) {
+    this.modal.toggle();
+    this.notasForm.controls["titulo"].setValue(nota.titulo);
+    this.notasForm.controls["imagen"].setValue(nota.imagen);
+    this.notasForm.controls["descripcion"].setValue(nota.descripcion);
+    this.notasForm.controls["contenido"].setValue(nota.contenido);
+    this.id = nota.id;
+  }
+
+  openAlertRemove(nota:any) {
+    Swal.fire({
+      title: 'Estás seguro?',
+      text: "Esta acción no se puede deshacer",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#5145CD',
+      cancelButtonColor: '#6B7280',
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.notasService.eliminar(nota.id).subscribe(res => {
+          if (res) {
+            if (res.success == true) {
+              Swal.fire({
+                icon: 'success',
+                text: res.message,
+                confirmButtonColor: '#5145CD',
+              })
+            }else {
+              Swal.fire({
+                icon: 'error',
+                text: res.message,
+                confirmButtonColor: '#5145CD',
+              })
+            }
+          }
+        })
+      }
+    })
   }
 }
