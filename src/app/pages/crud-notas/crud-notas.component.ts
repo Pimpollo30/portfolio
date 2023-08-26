@@ -23,7 +23,7 @@ export class CrudNotasComponent {
       spellcheck: true,
       height: 'auto',
       minHeight: '100px',
-      maxHeight: 'auto',
+      maxHeight: '100px',
       width: 'auto',
       minWidth: '0',
       translate: 'yes',
@@ -42,17 +42,9 @@ export class CrudNotasComponent {
       ],
       customClasses: [
       {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
+        name: 'pre-line',
+        class: 'text-gray-200 whitespace-pre-line dark:text-gray-200 bg-gray-900 dark:bg-gray-800 py-3 px-5 break-all font-mono rounded-lg shadow-lg',
+        tag: 'div',
       },
     ],
   };
