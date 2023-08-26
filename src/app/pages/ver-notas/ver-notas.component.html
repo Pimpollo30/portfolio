@@ -18,7 +18,7 @@
                             </div>
                         </address>
                         <h1 class="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">{{nota.titulo}}</h1>
-                        <img src="{{nota.imagen}}" class="w-max-full" alt="Imagen de la nota">
+                        <img src="{{nota.imagen}}" class="object-contain w-max-full" alt="Portada">
                     </header>
                     <div [innerHTML]="nota.contenido" class="break-all text-base font-normal text-gray-500 dark:text-gray-400 min-h-screen w-full"></div>
                 </article>
